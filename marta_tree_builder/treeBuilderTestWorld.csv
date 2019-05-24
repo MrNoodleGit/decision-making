@@ -1,0 +1,6 @@
+world	nodeLocation	NID	PARENTID	pathFromParent	depth	N	S	stepsFromRoot	isLeaf	nodeValue
+testWorld	(1,0)	N4241	NA	p(1,0);	0	0	0	0	FALSE	0
+testWorld	(0,0)	N8169	N4241	p(1,0);p(0,0);	1	1	1	1	FALSE	0.5
+testWorld	(4,0)	N5798	N4241	p(1,0);p(2,0);p(3,0);p(4,0);	1	3	3	3	FALSE	3.75
+testWorld	(4,0)	N6943	N8169	p(0,0);p(1,0);p(2,0);p(3,0);p(4,0);	2	3	4	5	TRUE	5.75
+testWorld	(0,0)	N1363	N5798	p(4,0);p(3,0);p(2,0);p(1,0);p(0,0);	2	1	4	7	TRUE	5.75
