@@ -1,0 +1,12 @@
+world	nodeLocation	NID	PARENTID	pathFromParent	depth	N	S	stepsFromRoot	isLeaf	nodeValue
+E2Maps/bunker3	(0,0)	N6767	NA	p(0,0);	0	0	0	0	FALSE	0
+E2Maps/bunker3	(2,0)	N8919	N6767	p(0,0);p(1,0);p(2,0);	1	4	2	2	FALSE	0.7826087
+E2Maps/bunker3	(2,4)	N6833	N8919	p(2,0);p(2,1);p(2,2);p(2,3);p(2,4);	2	5	4	6	FALSE	2.4782608
+E2Maps/bunker3	(4,4)	N3465	N6833	p(2,4);p(3,4);p(4,4);	3	8	2	8	FALSE	6.043478
+E2Maps/bunker3	(0,4)	N7118	N6833	p(2,4);p(1,4);p(0,4);	3	4	2	8	FALSE	4.1304345
+E2Maps/bunker3	(0,4)	N7490	N3465	p(4,4);p(3,4);p(2,4);p(1,4);p(0,4);	4	4	4	12	FALSE	8.391304
+E2Maps/bunker3	(0,6)	N5274	N7118	p(0,4);p(0,5);p(0,6);	4	2	2	10	FALSE	5.1304345
+E2Maps/bunker3	(4,4)	N3181	N7118	p(0,4);p(1,4);p(2,4);p(3,4);p(4,4);	4	8	4	12	FALSE	9.086956
+E2Maps/bunker3	(0,6)	N5760	N7490	p(0,4);p(0,5);p(0,6);	5	2	2	14	TRUE	9.73913
+E2Maps/bunker3	(4,4)	N2346	N5274	p(0,6);p(0,5);p(0,4);p(1,4);p(2,4);p(3,4);p(4,4);	5	8	6	16	TRUE	11.47826
+E2Maps/bunker3	(0,6)	N7588	N3181	p(4,4);p(3,4);p(2,4);p(1,4);p(0,4);p(0,5);p(0,6);	5	2	6	18	TRUE	10.782608
