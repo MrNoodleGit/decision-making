@@ -38,7 +38,7 @@ def build_graph(file_path):
     is_leaf_dict = {node: truth_value for node, truth_value in 
                     zip(graph_data_frame['NID'], graph_data_frame['is_leaf'])
                           }
-    node_value_dict = {node: value for node, value in 
+    path_value_dict = {node: value for node, value in 
                        zip(graph_data_frame['NID'], graph_data_frame['node_value'])
                           }
     node_ep_dict = {node: node_ep for node, node_ep in 
@@ -54,7 +54,7 @@ def build_graph(file_path):
     nx.set_node_attributes(G, new_observations_dict, 'new_observations')
     nx.set_node_attributes(G, steps_from_root_dict, 'steps_from_root')
     nx.set_node_attributes(G, is_leaf_dict, 'is_leaf')
-    nx.set_node_attributes(G, node_value_dict, 'node_value')
+    nx.set_node_attributes(G, path_value_dict, 'path_value')
     nx.set_node_attributes(G, node_ep_dict, 'node_ep')
     nx.set_node_attributes(G, black_remains_dict, 'black_remains')
 
