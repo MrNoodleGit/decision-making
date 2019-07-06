@@ -47,6 +47,9 @@ def build_graph(file_path):
     black_remains_dict = {node: black_remains for node, black_remains in 
                           zip(graph_data_frame['NID'], graph_data_frame['black_remains'])
                           }
+    steps_from_parent_node_dict = {node: steps for node, steps in 
+                          zip(graph_data_frame['NID'], graph_data_frame['steps_from_parent'])
+                          }
     
     nx.set_node_attributes(G, name_dict, 'name')
     nx.set_node_attributes(G, node_location_dict, 'node_location')
@@ -57,17 +60,18 @@ def build_graph(file_path):
     nx.set_node_attributes(G, path_value_dict, 'path_value')
     nx.set_node_attributes(G, node_ep_dict, 'node_ep')
     nx.set_node_attributes(G, black_remains_dict, 'black_remains')
+    nx.set_node_attributes(G, steps_from_parent_node_dict, 'steps_from_parent')
 
     path_from_parent_dict = {edge: path for edge, path in 
                              zip(edge_list, graph_data_frame['path_from_parent'][1:])
                             }
-    steps_from_parent_dict = {edge: steps for edge, steps in 
+    steps_from_parent_edge_dict = {edge: steps for edge, steps in 
                              zip(edge_list, graph_data_frame['steps_from_parent'][1:])
                             }
 
     nx.set_edge_attributes(G, path_from_parent_dict, 'path_from_parent')
-    nx.set_edge_attributes(G, steps_from_parent_dict, 'steps_from_parent')
-    nx.set_edge_attributes(G, steps_from_parent_dict, 'weight') # Assign steps from parent to node as edge weight
+    nx.set_edge_attributes(G, steps_from_parent_edge_dict, 'steps_from_parent')
+    nx.set_edge_attributes(G, steps_from_parent_edge_dict, 'weight') # Assign steps from parent to node as edge weight
     
     return G
 
