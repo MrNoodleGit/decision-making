@@ -70,7 +70,6 @@ def build_graph(file_path):
                             }
 
     nx.set_edge_attributes(G, path_from_parent_dict, 'path_from_parent')
-    nx.set_edge_attributes(G, steps_from_parent_edge_dict, 'steps_from_parent')
     nx.set_edge_attributes(G, steps_from_parent_edge_dict, 'weight') # Assign steps from parent to node as edge weight
     
     return G
