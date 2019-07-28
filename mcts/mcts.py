@@ -18,18 +18,19 @@ class UCTSearch():
     def __init__(self, tree):
         self.tree = tree.copy()
         self.exploration_constant = 1 / sqrt(2)
+        self.terminal_nodes = self.tree_terminal_nodes(self.tree)
+        self.set_terminal_values(self.terminal_nodes)
         
         # Initialize node statistics
         nx.set_node_attributes(self.tree, 0, 'visit_count')
         nx.set_node_attributes(self.tree, 0, 'total_sim_reward')
         nx.set_node_attributes(self.tree, False, 'visited')
         
-        
-    def run(self, root_node): # DONE
+    def run(self, root_node, iterations): # DONE
         i = 0
         leaf_node = root_node
 
-        while i < 1:
+        while i < iterations:
             reward = self.default_policy(leaf_node)
             self.backup(leaf_node, reward)
             leaf_node = self.tree_policy(root_node)
@@ -77,6 +78,9 @@ class UCTSearch():
 
         best_child = max(ucb_comparison_dict, key=lambda x: ucb_comparison_dict[x])
 
+        if exploration_constant == 0:
+            return best_child, ucb_comparison_dict
+
         return best_child
     
     def expand(self, node):# DONE
@@ -89,6 +93,7 @@ class UCTSearch():
     
     
     
+    #############################################################
     ## HELPER METHODS
     def num_successors(self, node):
         num_of_successors = len(list(self.tree.successors(node)))
@@ -120,7 +125,13 @@ class UCTSearch():
         
     def get_terminal_value(self, terminal_node):
     
-        path_value = self.tree.nodes[terminal_node]['path_value']
+        terminal_value = self.tree.nodes[terminal_node]['terminal_value']
+
+        return terminal_value
+
+    def get_path_value(self, node):
+    
+        path_value = self.tree.nodes[node]['path_value']
 
         return path_value
     
@@ -159,4 +170,31 @@ class UCTSearch():
             return inf
 
         return ucb_value
+
+    def tree_terminal_nodes(self, tree):
+        terminal_nodes = [v for v, d in tree.out_degree() if d == 0]
+        
+        return terminal_nodes
+
+    def normalize_value(self, value, value_list):
+        
+        normalized_value = value / sum(value_list)
+
+        return normalized_value
+
+    def set_terminal_values(self, terminal_nodes):
+        '''Inverts path_value of every terminal node 
+        (since lower path_value is better, but MCTS optimizes for max in UCT equation)
+        and normalizes each terminal value over sum of all terminal values'''
+
+        inverted_terminal_values = {
+            node: 1 / self.get_path_value(node) for node in terminal_nodes
+        }
+
+        s = sum(inverted_terminal_values.values())
+
+        for node in inverted_terminal_values:
+            self.tree.nodes[node]['terminal_value'] = inverted_terminal_values[node] / s
+
+        
         
