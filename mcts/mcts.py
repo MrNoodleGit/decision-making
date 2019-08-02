@@ -197,5 +197,23 @@ class UCTSearch():
         for node in inverted_terminal_values:
             self.tree.nodes[node]['terminal_value'] = inverted_terminal_values[node] / s
 
+    ## Run MCTS to find "best" path through decision tree
+    def generate_path(self, iterations_per_decision):
+    
+        root_node = self.root_node
+        node_sequence = [root_node]
+        decision_list = []
+        current_node = root_node
+        
+        while True:
+            current_node, comparison_dict = self.run(current_node, iterations_per_decision)
+            node_sequence.append(current_node)
+            decision_list.append(comparison_dict)
+
+            if self.terminal(current_node) is True:
+                break
+
+        return node_sequence, decision_list
+
         
         
