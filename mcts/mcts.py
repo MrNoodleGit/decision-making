@@ -17,6 +17,7 @@ for file in file_names:
 class UCTSearch():
     def __init__(self, tree):
         self.tree = tree.copy()
+        self.root_node = [node for node, degree in self.tree.in_degree() if degree == 0][0]
         self.exploration_constant = 1 / sqrt(2)
         self.terminal_nodes = self.tree_terminal_nodes(self.tree)
         self.set_terminal_values(self.terminal_nodes)
