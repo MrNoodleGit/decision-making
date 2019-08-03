@@ -9,8 +9,6 @@ import networkx as nx
 
 
 # In[25]:
-
-
 def build_graph(file_path):
     graph_data_frame = pd.read_csv(file_path, sep='\t')
     graph_data_frame['PARENTID'].fillna('X', inplace=True)
@@ -50,6 +48,9 @@ def build_graph(file_path):
     steps_from_parent_node_dict = {node: steps for node, steps in 
                           zip(graph_data_frame['NID'], graph_data_frame['steps_from_parent'])
                           }
+    choice_direction_dict = {node: direction for node, direction in
+                          zip(graph_data_frame['NID'], [get_choice_direction(path) for path in graph_data_frame['path_from_parent']])
+                          }
     
     nx.set_node_attributes(G, name_dict, 'name')
     nx.set_node_attributes(G, node_location_dict, 'node_location')
@@ -61,6 +62,7 @@ def build_graph(file_path):
     nx.set_node_attributes(G, node_ep_dict, 'node_ep')
     nx.set_node_attributes(G, black_remains_dict, 'black_remains')
     nx.set_node_attributes(G, steps_from_parent_node_dict, 'steps_from_parent')
+    nx.set_node_attributes(G, choice_direction_dict, 'choice_direction')
 
     path_from_parent_dict = {edge: path for edge, path in 
                              zip(edge_list, graph_data_frame['path_from_parent'][1:])
@@ -70,7 +72,46 @@ def build_graph(file_path):
                             }
 
     nx.set_edge_attributes(G, path_from_parent_dict, 'path_from_parent')
+    nx.set_edge_attributes(G, steps_from_parent_edge_dict, 'steps_from_parent')
     nx.set_edge_attributes(G, steps_from_parent_edge_dict, 'weight') # Assign steps from parent to node as edge weight
     
     return G
 
+def parse_path_string(path_string):
+    a = path_string.replace('p','')
+    b = a.split(';')
+    b.remove('')
+    
+    return b
+
+def parse_location(location: str):
+    location_list = location
+    location_list = location_list.strip('()')
+    location_list = location_list.split(',')
+    location_list = [int(item) for item in location_list]
+    
+    return location_list
+
+def get_choice_direction(path_from_parent):
+    parsed_path = parse_path_string(path_from_parent)
+    
+    try:
+        current_location = parse_location(parsed_path[0])
+        next_location = parse_location(parsed_path[1])
+    except IndexError:
+        return None
+    
+    # Left
+    if next_location[0] < current_location[0]:
+        return 0
+    # Right
+    elif next_location[0] > current_location[0]:
+        return 1
+    # Up
+    elif next_location[1] < current_location[1]:
+        return 2
+    # Down
+    elif next_location[1] > current_location[1]:
+        return 3
+    else:
+        raise Exception("No direction could be assigned. Check function input")
