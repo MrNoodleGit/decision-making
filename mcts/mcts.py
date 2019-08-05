@@ -26,29 +26,19 @@ class UCTSearch():
         nx.set_node_attributes(self.tree, 0, 'visit_count')
         nx.set_node_attributes(self.tree, 0, 'total_sim_reward')
         nx.set_node_attributes(self.tree, False, 'visited')
-        
-    def run_target_node(self, root_node, target_node): # DONE
-        leaf_node = root_node
-        iterations = 0
-        num_successors = self.num_successors(root_node)
 
-        while True:
+    def run(self, root_node, iterations): # DONE
+        i = 0
+        leaf_node = root_node
+
+        while i <= iterations:
             reward = self.default_policy(leaf_node)
             self.backup(leaf_node, reward)
             leaf_node = self.tree_policy(root_node)
             
-            if iterations >= num_successors:
-                best_child, value_comparison_dict = self.best_child(root_node, 0)
-                if best_child == target_node:
-                    break
-
-            if iterations == 500:
-                print(iterations)
-                return target_node, value_comparison_dict
+            i += 1
             
-            iterations += 1
-        print(iterations)
-        return best_child, value_comparison_dict
+        return self.best_child(root_node, 0)
         
     def tree_policy(self, node): # DONE
         while self.num_successors(node) != 0:
@@ -207,10 +197,54 @@ class UCTSearch():
         for node in inverted_terminal_values:
             self.tree.nodes[node]['terminal_value'] = inverted_terminal_values[node] / s
 
+    ## Run MCTS to find "best" path through decision tree
+    def generate_path(self, iterations_per_decision):
+    
+        root_node = self.root_node
+        node_sequence = [root_node]
+        decision_list = []
+        current_node = root_node
+        
+        while True:
+            current_node, comparison_dict = self.run(current_node, iterations_per_decision)
+            node_sequence.append(current_node)
+            decision_list.append(comparison_dict)
+
+            if self.terminal(current_node) is True:
+                break
+
+        return node_sequence, decision_list
+
+    ## For probabilities_to_values    
+    def run_target_node(self, root_node, target_node): # DONE
+        leaf_node = root_node
+        iterations = 0
+        num_successors = self.num_successors(root_node)
+
+        while True:
+            reward = self.default_policy(leaf_node)
+            self.backup(leaf_node, reward)
+            leaf_node = self.tree_policy(root_node)
+            
+            if  iterations % num_successors == 0 and iterations > 0:
+                best_child, value_comparison_dict = self.best_child(root_node, 0)
+                if best_child == target_node:
+                    break
+
+            if iterations == 100:
+                print(f'Reached max iteration limit: {iterations} iterations')
+                return target_node, value_comparison_dict
+            
+            iterations += 1
+        print(iterations)
+
+        return best_child, value_comparison_dict
+
     ## Run MCTS to find until it generates target_path
     def generate_target_path(self, target_path):
         node_sequence = [target_path[0]]
         decision_list = []
+        last_node = target_path[-1]
         
         for index, node in enumerate(target_path):
 
@@ -218,8 +252,11 @@ class UCTSearch():
             node_sequence.append(next_node)
             decision_list.append(value_comparison_dict)
 
-            if next_node == target_path[-1]:
+            if next_node == last_node:
                 break
+        
+        next_node, value_comparison_dict = self.run(last_node, self.num_successors(last_node))
+        decision_list.append(value_comparison_dict)
 
         return node_sequence, decision_list
 
