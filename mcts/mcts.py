@@ -231,12 +231,11 @@ class UCTSearch():
                 if best_child == target_node:
                     break
 
-            if iterations == 100:
-                print(f'Reached max iteration limit: {iterations} iterations')
+            if iterations == len(self.tree.nodes):
+                # print(f'Reached max iteration limit: {iterations} iterations')
                 return target_node, value_comparison_dict
             
             iterations += 1
-        print(iterations)
 
         return best_child, value_comparison_dict
 
@@ -246,16 +245,20 @@ class UCTSearch():
         decision_list = []
         last_node = target_path[-1]
         
-        for index, node in enumerate(target_path):
+        if len(target_path) > 1:
+            for index, node in enumerate(target_path):
 
-            next_node, value_comparison_dict = self.run_target_node(node, target_path[index + 1])
-            node_sequence.append(next_node)
-            decision_list.append(value_comparison_dict)
+                next_node, value_comparison_dict = self.run_target_node(node, target_path[index + 1])
+                node_sequence.append(next_node)
+                decision_list.append(value_comparison_dict)
 
-            if next_node == last_node:
-                break
+                if next_node == last_node:
+                    break
         
-        next_node, value_comparison_dict = self.run(last_node, self.num_successors(last_node))
+            next_node, value_comparison_dict = self.run(last_node, self.num_successors(last_node))
+        else:
+            next_node, value_comparison_dict = self.run(last_node, len(self.tree.nodes) * 2)
+
         decision_list.append(value_comparison_dict)
 
         return node_sequence, decision_list
