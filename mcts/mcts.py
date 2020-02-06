@@ -1,11 +1,12 @@
 import networkx as nx
 from random import randrange
 from math import sqrt, log, inf
-
 import sys, os
+
 working_directory = 'C:\\Users\\ronal\\Documents\\GitHub\\decision-making\\'
 # Append path where graph_builder.py is saved
 sys.path.append(working_directory + 'graph_builder')
+
 from graph_builder import *
 
 file_names = os.listdir(working_directory + 'path_analysis\\treebuilderUpdated')
