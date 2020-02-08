@@ -2,11 +2,11 @@ import pandas as pd
 import networkx as nx
 
 def build_graph(file_path):
-    graph_data_frame = pd.read_csv(file_path, sep='\t')
-    graph_data_frame['PARENTID'].fillna('X', inplace=True)
+    graph_data_frame = pd.read_csv(file_path, sep='\t') # Import map into pandas data frame
+    graph_data_frame['PARENTID'].fillna('X', inplace=True) # Root nodes have no parent.
 
-    G = nx.DiGraph(world=graph_data_frame['world'][0])
-    edge_list = list(zip(graph_data_frame['PARENTID'], graph_data_frame['NID']))
+    G = nx.DiGraph(world=graph_data_frame['world'][0]) # Create networkx graph G and set graph attribute "world" to name of map
+    edge_list = list(zip(graph_data_frame['PARENTID'], graph_data_frame['NID'])) # List of (parent, child) pairs
     edge_list.pop(0) # Remove edge leading to root node.
     G.add_edges_from(edge_list)
 
@@ -28,9 +28,9 @@ def build_graph(file_path):
     is_leaf_dict = {node: truth_value for node, truth_value in 
                     zip(graph_data_frame['NID'], graph_data_frame['is_leaf'])
                           }
-    path_value_dict = {node: value for node, value in 
-                       zip(graph_data_frame['NID'], graph_data_frame['node_value'])
-                          }
+#     path_value_dict = {node: value for node, value in 
+#                        zip(graph_data_frame['NID'], graph_data_frame['node_value'])
+#                           }
     node_ep_dict = {node: node_ep for node, node_ep in 
                     zip(graph_data_frame['NID'], graph_data_frame['node_ep'])
                           }
@@ -47,7 +47,7 @@ def build_graph(file_path):
     nx.set_node_attributes(G, new_observations_dict, 'new_observations')
     nx.set_node_attributes(G, steps_from_root_dict, 'steps_from_root')
     nx.set_node_attributes(G, is_leaf_dict, 'is_leaf')
-    nx.set_node_attributes(G, path_value_dict, 'path_value')
+#     nx.set_node_attributes(G, path_value_dict, 'path_value')
     nx.set_node_attributes(G, node_ep_dict, 'node_ep')
     nx.set_node_attributes(G, black_remains_dict, 'black_remains')
     nx.set_node_attributes(G, steps_from_parent_node_dict, 'steps_from_parent')
