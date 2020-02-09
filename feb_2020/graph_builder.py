@@ -14,31 +14,34 @@ def build_graph(file_path):
                           zip(graph_data_frame['NID'], graph_data_frame['NID'])
                           }
     node_location_dict = {node: location for node, location in
-                          zip(graph_data_frame['NID'], graph_data_frame['node_location'])
+                          zip(graph_data_frame['NID'], graph_data_frame['nodeLocation'])
                           }
     depth_dict = {node: depth for node, depth in 
                   zip(graph_data_frame['NID'], graph_data_frame['depth'])
                           }
     new_observations_dict = {node: new_observations for node, new_observations in 
-                             zip(graph_data_frame['NID'], graph_data_frame['new_observations'])
+                             zip(graph_data_frame['NID'], graph_data_frame['N'])
                           }
     steps_from_root_dict = {node: steps for node, steps in 
-                            zip(graph_data_frame['NID'], graph_data_frame['steps_from_root'])
+                            zip(graph_data_frame['NID'], graph_data_frame['stepsFromRoot'])
                           }
     is_leaf_dict = {node: truth_value for node, truth_value in 
-                    zip(graph_data_frame['NID'], graph_data_frame['is_leaf'])
+                    zip(graph_data_frame['NID'], graph_data_frame['isLeaf'])
                           }
 #     path_value_dict = {node: value for node, value in 
 #                        zip(graph_data_frame['NID'], graph_data_frame['node_value'])
 #                           }
     node_ep_dict = {node: node_ep for node, node_ep in 
-                    zip(graph_data_frame['NID'], graph_data_frame['node_ep'])
+                    zip(graph_data_frame['NID'], graph_data_frame['nodeEP'])
                           }
     black_remains_dict = {node: black_remains for node, black_remains in 
-                          zip(graph_data_frame['NID'], graph_data_frame['black_remains'])
+                          zip(graph_data_frame['NID'], graph_data_frame['blackremains'])
                           }
     steps_from_parent_node_dict = {node: steps for node, steps in 
-                          zip(graph_data_frame['NID'], graph_data_frame['steps_from_parent'])
+                          zip(graph_data_frame['NID'], graph_data_frame['S'])
+                          }
+    cell_distances_dict = {node: distances for node, distances in 
+                          zip(graph_data_frame['NID'], graph_data_frame['cellDistances'])
                           }
     
     nx.set_node_attributes(G, name_dict, 'name')
@@ -51,6 +54,7 @@ def build_graph(file_path):
     nx.set_node_attributes(G, node_ep_dict, 'node_ep')
     nx.set_node_attributes(G, black_remains_dict, 'black_remains')
     nx.set_node_attributes(G, steps_from_parent_node_dict, 'steps_from_parent')
+    nx.set_node_attributes(G, cell_distances_dict, 'cell_distances')
 
     path_from_parent_dict = {edge: path for edge, path in 
                              zip(edge_list, graph_data_frame['path_from_parent'][1:])
