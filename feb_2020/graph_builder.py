@@ -57,10 +57,10 @@ def build_graph(file_path):
     nx.set_node_attributes(G, cell_distances_dict, 'cell_distances')
 
     path_from_parent_dict = {edge: path for edge, path in 
-                             zip(edge_list, graph_data_frame['path_from_parent'][1:])
+                             zip(edge_list, graph_data_frame['pathFromParent'][1:])
                             }
     steps_from_parent_edge_dict = {edge: steps for edge, steps in 
-                             zip(edge_list, graph_data_frame['steps_from_parent'][1:])
+                             zip(edge_list, graph_data_frame['S'][1:])
                             }
 
     nx.set_edge_attributes(G, path_from_parent_dict, 'path_from_parent')
