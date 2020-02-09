@@ -1,0 +1,10 @@
+world	nodeLocation	NID	PARENTID	pathFromParent	depth	N	S	stepsFromRoot	isLeaf	nodeValue	nodeEP	blackremains	cellDistances
+courtyard	(0,0)	N3719219	NA	p(0,0);	0	0.0	0	0	FALSE	6.8	0	10	
+courtyard	(3,0)	N990982	N3719219	p(0,0);p(1,0);p(2,0);p(3,0);	1	4.0	3	3	FALSE	6.8	10	6	1,2,3,4
+courtyard	(0,4)	N3977188	N3719219	p(0,0);p(0,1);p(0,2);p(0,3);p(0,4);	1	5.0	4	4	FALSE	8.2	15	5	1,2,3,4,5
+courtyard	(3,2)	N6673600	N990982	p(3,0);p(3,1);p(3,2);	2	2.0	2	5	FALSE	7.6666665	2	4	1,1
+courtyard	(0,4)	N3622934	N990982	p(3,0);p(2,0);p(1,0);p(0,0);p(0,1);p(0,2);p(0,3);p(0,4);	2	4.0	7	10	FALSE	14.0	12	2	1,2,4,5
+courtyard	(3,4)	N8241686	N3977188	p(0,4);p(1,4);p(2,4);p(3,4);	2	3.0	3	7	FALSE	9.4	6	2	3,2,1
+courtyard	(3,4)	N5482243	N6673600	p(3,2);p(3,3);p(3,4);	3	4.0	2	7	TRUE	8.5	6	0	2,1,1,2
+courtyard	(3,2)	N7471328	N3622934	p(0,4);p(1,4);p(2,4);p(3,4);p(3,3);p(3,2);	3	2.0	5	15	TRUE	16.0	2	0	1,1
+courtyard	(3,2)	N4988346	N8241686	p(3,4);p(3,3);p(3,2);	3	2.0	2	9	TRUE	10.0	2	0	1,1
