@@ -47,8 +47,8 @@ class optimalPolicy():
         unobserved squares before visiting the node.
         Returns a probability > 0 and <= 1
         '''
-        num_observations = self.graph[node]['new_observations']
-        num_unobserved_squares = self.graph[node]['new_observations'] + self.graph[node]['black_remains'] # Total number of
+        num_observations = self.graph.nodes[node]['new_observations']
+        num_unobserved_squares = self.graph.nodes[node]['new_observations'] + self.graph.nodes[node]['black_remains'] # Total number of
         # unobserved squares before visiting a node.
 
         # Probability given by number of observations to be made at node divided by number of possible reward locations.
@@ -61,9 +61,9 @@ class optimalPolicy():
         Returns the average distance that an agent must move to reach a 
         reward from node position if it becomes available at this node
         '''
-        steps_from_root = self.graph[node]['steps_from_root']
-        expected_steps = self.graph[node]['expected_steps']
-        num_observations = self.graph[node]['new_observations']
+        steps_from_root = self.graph.nodes[node]['steps_from_root']
+        expected_steps = self.graph.nodes[node]['expected_steps']
+        num_observations = self.graph.nodes[node]['new_observations']
 
         average_reward_distance = expected_steps / num_observations # 
 
