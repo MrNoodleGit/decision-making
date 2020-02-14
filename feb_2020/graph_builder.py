@@ -40,7 +40,7 @@ def build_graph(file_path):
 #                        zip(graph_data_frame['NID'], graph_data_frame['node_value'])
 #                           }
 
-    node_ep_dict = create_dict(graph_data_frame['NID'], graph_data_frame['nodeEP'])
+    expected_steps_dict = create_dict(graph_data_frame['NID'], graph_data_frame['nodeEP'])
     black_remains_dict = create_dict(graph_data_frame['NID'], graph_data_frame['blackremains'])
     steps_from_parent_node_dict = create_dict(graph_data_frame['NID'], graph_data_frame['S'])
     cell_distances_dict = create_dict(graph_data_frame['NID'], graph_data_frame['cellDistances'])
@@ -52,7 +52,7 @@ def build_graph(file_path):
     nx.set_node_attributes(G, steps_from_root_dict, 'steps_from_root')
     nx.set_node_attributes(G, is_leaf_dict, 'is_leaf')
 #     nx.set_node_attributes(G, path_value_dict, 'path_value')
-    nx.set_node_attributes(G, node_ep_dict, 'node_ep')
+    nx.set_node_attributes(G, expected_steps_dict, 'expected_steps')
     nx.set_node_attributes(G, black_remains_dict, 'black_remains')
     nx.set_node_attributes(G, steps_from_parent_node_dict, 'steps_from_parent')
     nx.set_node_attributes(G, cell_distances_dict, 'cell_distances')
