@@ -10,29 +10,39 @@ def iterate_graph_builder(directory: str):
     '''
     world_names = os.listdir(directory) # List of all world names
     graphs = {}
+    # Store each graph as a value, keyed by the corresponding world name.
     for world in world_names:
-        graphs[world.replace('.csv', '')] = build_graph(directory + '\\' + world) # Store each graph as a value, 
-        # keyed by the corresponding world name.
+        graphs[world.replace('.csv', '')] = build_graph(directory + '\\' + world)
     
     return graphs
 
-graphs = iterate_graph_builder('tree_builder\\worlds') # Initialize graphs within our programming environment
+# Initialize graphs within our programming environment
+graphs = iterate_graph_builder('tree_builder\\worlds')
 
 class optimalPolicy():
     def __init__(self, graph):
-        self.graph = graph # A networkx graph of a maze
+        '''
+        Initialize the optimalPolicy object with a networkx maze graph.
+        '''
+        self.graph = graph
         
     def has_children(self, node):
         '''
         node: a node from a networkx graph
         Returns True if node has children; False otherwise.
         '''
-        if self.graph.out_degree[node] > 0: # If node has more than 0 children, has_children returns True
+        # graph.out_gree[node] gives number of node's children
+        if self.graph.out_degree[node] > 0:
             return True
         else:
             return False
 
     def is_root_node(self, node):
+        '''
+        Determine if a node is the root of a decision tree.
+        Input: Name of the node
+        Returns True if node is a root; False otherwise.
+        '''
         if int(self.graph.in_degree(node)) == 0:
             return True
 
@@ -41,7 +51,8 @@ class optimalPolicy():
 
     def get_children(self, node):
         '''
-        Returns list of children for a node
+        Input: Name of the node
+        Returns list of the node's children
         '''
         children = list(self.graph.successors(node))
 
@@ -55,10 +66,13 @@ class optimalPolicy():
         Returns a probability > 0 and <= 1
         '''
         num_observations = self.graph.nodes[node]['new_observations']
-        num_unobserved_squares = self.graph.nodes[node]['new_observations'] + self.graph.nodes[node]['black_remains'] # Total number of
-        # unobserved squares before visiting a node.
+        
+        # Total number of unobserved squares before visiting a node.
+        num_unobserved_squares = self.graph.nodes[node]['new_observations'] + \
+        self.graph.nodes[node]['black_remains'] 
 
-        # Probability given by number of observations to be made at node divided by number of possible reward locations.
+        # Probability given by number of observations to be made at node divided 
+        # by number of possible reward locations.
         return num_observations / num_unobserved_squares
         
 
@@ -81,23 +95,35 @@ class optimalPolicy():
         
     def total_expected_cost(self, node):
         '''
+        Calculate the total expected cost of visiting a node. This is based on the 
+        expected cost of the node in question plus the expected cost of its children, 
+        so the calculation is recursive.
+
+        Input: Name of the node
+        Returns 0 if the node is a root, node_cost(node) if the node is a leaf. 
+        Otherwise, returns the total expected cost of the node.
         '''
         if self.is_root_node(node):
             return 0
 
-        # Create base case for recursion
+        # Create base case for recursion.
+        # Return the individual node cost if the node is a leaf.
         elif self.has_children(node) is False:
             # Confirm that if we've reached the last
             # set of observations, the probability of finding the reward is 100%
-            assert int(self.reward_probability(node)) == 1, f'Reward probability is {self.reward_probability(node)}'
+            assert int(self.reward_probability(node)) == 1, \
+            f'Reward probability is {self.reward_probability(node)}'
 
             return self.node_cost(node)
 
+        # Total cost = (probability of finding the reward at node * individual node cost) 
+        # + (probability of finding the reward in node's children * total cost of best child)
         else:
-            expected_cost = self.reward_probability(node) * self.node_cost(node) + (1 - self.reward_probability(node)) * \
+            total_cost = (self.reward_probability(node) * self.node_cost(node)) + \
+            (1 - self.reward_probability(node)) * \
             min((self.total_expected_cost(child) for child in self.get_children(node)))
 
-            return expected_cost
+            return total_cost
 
 
 my_policy = optimalPolicy(graphs['cubicles'])
