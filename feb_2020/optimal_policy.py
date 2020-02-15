@@ -32,6 +32,13 @@ class optimalPolicy():
         else:
             return False
 
+    def is_root_node(self, node):
+        if int(self.graph.in_degree(node)) == 0:
+            return True
+
+        else:
+            return False
+
     def get_children(self, node):
         '''
         Returns list of children for a node
@@ -63,6 +70,7 @@ class optimalPolicy():
         '''
         steps_from_root = self.graph.nodes[node]['steps_from_root']
         expected_steps = self.graph.nodes[node]['expected_steps']
+
         num_observations = self.graph.nodes[node]['new_observations']
 
         average_reward_distance = expected_steps / num_observations # 
@@ -74,9 +82,11 @@ class optimalPolicy():
     def total_expected_cost(self, node):
         '''
         '''
-        
+        if self.is_root_node(node):
+            return 0
+
         # Create base case for recursion
-        if self.has_children(node) is False:
+        elif self.has_children(node) is False:
             # Confirm that if we've reached the last
             # set of observations, the probability of finding the reward is 100%
             assert int(self.reward_probability(node)) == 1, f'Reward probability is {self.reward_probability(node)}'
@@ -90,6 +100,6 @@ class optimalPolicy():
             return expected_cost
 
 
-my_policy = optimalPolicy(graphs['courtyard'])
+my_policy = optimalPolicy(graphs['cubicles'])
 
-print(my_policy.total_expected_cost('N3719219'))
+print(my_policy.total_expected_cost('N4214308'))
