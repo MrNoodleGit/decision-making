@@ -16,9 +16,6 @@ def iterate_graph_builder(directory: str):
     
     return graphs
 
-# Initialize graphs within our programming environment
-graphs = iterate_graph_builder('tree_builder\\worlds')
-
 class optimalPolicy():
     def __init__(self, graph):
         '''
@@ -92,6 +89,13 @@ class optimalPolicy():
         cost = steps_from_root + average_reward_distance
 
         return cost
+    
+    def best_child_cost(self, node):
+        '''
+        '''
+        cost = min((self.total_expected_cost(child) for child in self.get_children(node)))
+
+        return cost
         
     def total_expected_cost(self, node):
         '''
@@ -120,11 +124,12 @@ class optimalPolicy():
         # + (probability of finding the reward in node's children * total cost of best child)
         else:
             total_cost = (self.reward_probability(node) * self.node_cost(node)) + \
-            (1 - self.reward_probability(node)) * \
-            min((self.total_expected_cost(child) for child in self.get_children(node)))
+            (1 - self.reward_probability(node)) * self.best_child_cost(node)
 
             return total_cost
 
+# Initialize graphs within our programming environment
+graphs = iterate_graph_builder('tree_builder\\worlds')
 
 my_policy = optimalPolicy(graphs['cubicles'])
 
