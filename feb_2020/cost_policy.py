@@ -1,7 +1,7 @@
-import os, networkx as nx, sys, pandas as pd
+import os, networkx as nx, sys, pandas as pd, numpy as np
 from graph_builder import *
 
-os.getcwd() # Check current directory
+# os.getcwd() # Check current directory
 
 def iterate_graph_builder(directory: str):
     '''
@@ -16,7 +16,7 @@ def iterate_graph_builder(directory: str):
     
     return graphs
 
-class optimalPolicy():
+class costPolicy():
     def __init__(self, graph):
         '''
         Initialize the optimalPolicy object with a networkx maze graph.
@@ -97,13 +97,15 @@ class optimalPolicy():
 
         return cost
         
-    def total_expected_cost(self, node):
+    def total_expected_cost(self, node, discount_factor=1):
         '''
         Calculate the total expected cost of visiting a node. This is based on the 
         expected cost of the node in question plus the expected cost of its children, 
         so the calculation is recursive.
 
-        Input: Name of the node
+        node: Name of the node
+        discount_factor: a value between 0 and 1 to discount best_child_cost. Default discount_factor is 1,
+        corresponding to the optimal value policy.
         Returns 0 if the node is a root, node_cost(node) if the node is a leaf. 
         Otherwise, returns the total expected cost of the node.
         '''
@@ -124,13 +126,6 @@ class optimalPolicy():
         # + (probability of finding the reward in node's children * total cost of best child)
         else:
             total_cost = (self.reward_probability(node) * self.node_cost(node)) + \
-            (1 - self.reward_probability(node)) * self.best_child_cost(node)
+            (1 - self.reward_probability(node)) * discount_factor * self.best_child_cost(node)
 
             return total_cost
-
-# Initialize graphs within our programming environment
-graphs = iterate_graph_builder('tree_builder\\worlds')
-
-my_policy = optimalPolicy(graphs['cubicles'])
-
-print(my_policy.total_expected_cost('N4214308'))
