@@ -16,7 +16,7 @@ def iterate_graph_builder(directory: str):
     
     return graphs
 
-class costPolicy():
+class CostPolicy():
     def __init__(self, graph):
         '''
         Initialize the optimalPolicy object with a networkx maze graph.

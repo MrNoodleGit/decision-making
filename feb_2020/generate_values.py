@@ -26,11 +26,11 @@ def generate_discounted_values(discount_factors:iter):
         new_value_column = []
         # row[0] == 'world' and row[2] == 'child'
         for row in node_df.itertuples(index=False):
-            # if the current world matches the last world, use the same costPolicy instance
+            # if the current world matches the last world, use the same CostPolicy instance
             if row[0] == last_world:
                 continue
             else:
-                discount_policy = costPolicy(graphs[row[0]])
+                discount_policy = CostPolicy(graphs[row[0]])
             
             node_value = discount_policy.total_expected_cost(row[2], factor)
             new_value_column.append(round(node_value, 3))
