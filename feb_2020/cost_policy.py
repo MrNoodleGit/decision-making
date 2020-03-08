@@ -1,4 +1,4 @@
-import os, networkx as nx, sys, pandas as pd, numpy as np
+import os, networkx as nx, sys, pandas as pd, numpy as np, copy
 from graph_builder import *
 
 # os.getcwd() # Check current directory
@@ -6,7 +6,7 @@ from graph_builder import *
 def iterate_graph_builder(directory: str):
     '''
     Build graphs from all csv files within directory. 
-    Returns a dictionary with key:value = maze_name:maze_graph
+    Returns a dictionary with key:value as maze_name:maze_graph
     '''
     world_names = os.listdir(directory) # List of all world names
     graphs = {}
