@@ -17,19 +17,19 @@ def iterate_graph_builder(directory: str):
     return graphs
 
 class CostPolicy():
-    def __init__(self, graph):
+    def __init__(self, tree):
         '''
-        Initialize the optimalPolicy object with a networkx maze graph.
+        Initialize the optimalPolicy object with a networkx maze tree.
         '''
-        self.graph = graph
+        self.tree = tree
         
     def has_children(self, node):
         '''
         node: a node from a networkx graph
         Returns True if node has children; False otherwise.
         '''
-        # graph.out_gree[node] gives number of node's children
-        if self.graph.out_degree[node] > 0:
+        # graph.out_degree[node] gives number of node's children
+        if self.tree.out_degree[node] > 0:
             return True
         else:
             return False
@@ -40,7 +40,7 @@ class CostPolicy():
         Input: Name of the node
         Returns True if node is a root; False otherwise.
         '''
-        if int(self.graph.in_degree(node)) == 0:
+        if int(self.tree.in_degree(node)) == 0:
             return True
 
         else:
@@ -51,7 +51,7 @@ class CostPolicy():
         Input: Name of the node
         Returns list of the node's children
         '''
-        children = list(self.graph.successors(node))
+        children = list(self.tree.successors(node))
 
         return children 
 
@@ -62,11 +62,11 @@ class CostPolicy():
         unobserved squares before visiting the node.
         Returns a probability > 0 and <= 1
         '''
-        num_observations = self.graph.nodes[node]['new_observations']
+        num_observations = self.tree.nodes[node]['new_observations']
         
         # Total number of unobserved squares before visiting a node.
-        num_unobserved_squares = self.graph.nodes[node]['new_observations'] + \
-        self.graph.nodes[node]['black_remains'] 
+        num_unobserved_squares = self.tree.nodes[node]['new_observations'] + \
+        self.tree.nodes[node]['black_remains'] 
 
         # Probability given by number of observations to be made at node divided 
         # by number of possible reward locations.
@@ -79,10 +79,10 @@ class CostPolicy():
         Returns the average distance that an agent must move to reach a 
         reward from node position if it becomes available at this node
         '''
-        steps_from_root = self.graph.nodes[node]['steps_from_root']
-        expected_steps = self.graph.nodes[node]['expected_steps']
+        steps_from_root = self.tree.nodes[node]['steps_from_root']
+        expected_steps = self.tree.nodes[node]['expected_steps']
 
-        num_observations = self.graph.nodes[node]['new_observations']
+        num_observations = self.tree.nodes[node]['new_observations']
 
         average_reward_distance = expected_steps / num_observations # 
 
