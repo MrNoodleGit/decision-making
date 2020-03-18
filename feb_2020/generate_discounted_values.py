@@ -14,11 +14,11 @@ def import_data_file(file):
 
 
 
-def generate_discounted_values(discount_factors:iter):
+def generate_discounted_values(data_frame, discount_factors:iter):
     '''
     '''
     # Generate a sorted data frame with relevant node data
-    node_df = import_data_file('data//treeNodePolicy.csv').sort_values(by=['world'])
+    node_df = data_frame
 
     last_world = ''
 
@@ -39,8 +39,11 @@ def generate_discounted_values(discount_factors:iter):
 
     return node_df
 
+data_frame = import_data_file('data\\treeNodePolicyIncludingN=1.csv').sort_values(by=['world'])
+
 graphs = iterate_graph_builder('tree_builder\\worlds')
 
-discounted_values_df = generate_discounted_values(np.arange(0.5, 1, 0.05))
+discounted_values_df = generate_discounted_values(data_frame, np.arange(0.5, 1, 0.05))
 
-discounted_values_df.to_csv('output//discounted_node_policy.csv', sep='\t')
+output_filepath = 'output//discounted_values_including_n=1.csv'
+discounted_values_df.to_csv(output_filepath, sep='\t')
