@@ -62,7 +62,7 @@ class SampleCellDistances(UCTSearch):
         print(sim_nodes)
         return self.get_reward(current_node, sim_nodes)
 
-    def get_reward(self, current_node, node_list):
+    def get_reward(self, current_node, node_list): #TODO Redefine get_reward
         cost_policy = MCTSCostPolicy(self.tree)
 
         if len(node_list) == 0:

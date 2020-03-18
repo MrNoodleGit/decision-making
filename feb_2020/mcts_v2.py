@@ -60,7 +60,7 @@ class UCTSearch():
             # Choose a child of current_node random (uniform distribution)
             current_node = self.get_children(current_node, index=randrange(num_of_children))
             
-        return self.get_terminal_value(current_node) # TODO define get_terminal_value
+        return self.get_reward() # TODO Define get_reward
     
     def backup(self, node, reward):
         while True:
