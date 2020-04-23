@@ -43,7 +43,7 @@ data_frame = import_data_file('data\\treeNodePolicyIncludingN=1.csv').sort_value
 
 graphs = iterate_graph_builder('tree_builder\\worlds')
 
-discounted_values_df = generate_discounted_values(data_frame, np.arange(0.5, 1, 0.05))
+discounted_values_df = generate_discounted_values(data_frame, np.linspace(0.7, 0.99, num=30))
 
-output_filepath = 'output//discounted_values_including_n=1.csv'
+output_filepath = 'output//discounted_values_more_gamma_samples.csv'
 discounted_values_df.to_csv(output_filepath, sep='\t')
