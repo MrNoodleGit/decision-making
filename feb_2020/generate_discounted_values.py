@@ -46,5 +46,5 @@ graphs = iterate_graph_builder('tree_builder\\worlds')
 number_of_values = 50
 discounted_values_df = generate_discounted_values(data_frame, np.linspace(0.5, 0.99, num=number_of_values))
 
-output_filepath = f'output//discounted_values_{number_of_values}_gamma_samples.csv'
+output_filepath = f'output//discounted_values_steps_from_parent.csv'
 discounted_values_df.to_csv(output_filepath, sep='\t')
