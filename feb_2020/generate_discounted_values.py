@@ -43,8 +43,8 @@ data_frame = import_data_file('data\\treeNodePolicyIncludingN=1.csv').sort_value
 
 graphs = iterate_graph_builder('tree_builder\\worlds')
 
-number_of_values = 50
-discounted_values_df = generate_discounted_values(data_frame, np.linspace(0.5, 0.99, num=number_of_values))
+number_of_values = 100
+discounted_values_df = generate_discounted_values(data_frame, np.linspace(0, 0.99, num=number_of_values))
 
-output_filepath = f'output//discounted_values_steps_from_parent.csv'
+output_filepath = f'output//discounted_values_from_root_zero_gamma.csv'
 discounted_values_df.to_csv(output_filepath, sep='\t')

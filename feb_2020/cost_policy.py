@@ -79,17 +79,17 @@ class CostPolicy():
         Returns the average distance that an agent must move to reach a 
         reward from node position if it becomes available at this node
         '''
-        # steps_from_root = self.tree.nodes[node]['steps_from_root']
-        steps_from_parent = self.tree.nodes[node]['steps_from_parent']
+        steps_from_root = self.tree.nodes[node]['steps_from_root']
+        # steps_from_parent = self.tree.nodes[node]['steps_from_parent']
         expected_steps = self.tree.nodes[node]['expected_steps']
 
         num_observations = self.tree.nodes[node]['new_observations']
 
         average_reward_distance = expected_steps / num_observations # 
 
-        # cost = steps_from_root + average_reward_distance
+        cost = steps_from_root + average_reward_distance
         # We are testing calculating node_cost only taking steps_from_parent into account. This assumes compositionality
-        cost = steps_from_parent + average_reward_distance
+        # cost = steps_from_parent + average_reward_distance
 
         return cost
     
