@@ -14,29 +14,39 @@ def import_data_file(file):
 
 
 
-def generate_discounted_values(data_frame, discount_factors:iter):
+def generate_discounted_values(data_frame, discount_factors:iter, graphs):
     '''
     '''
     # Generate a sorted data frame with relevant node data
     node_df = data_frame
 
-    last_world = ''
+    # last_world = ''
 
-    for factor in discount_factors:
-        new_value_column = []
-        # row[0] == 'world' and row[2] == 'child'
-        for row in node_df.itertuples(index=False):
-            # if the current world matches the last world, use the same CostPolicy instance
-            if row[0] == last_world:
-                continue
-            else:
-                discount_policy = CostPolicy(graphs[row[0]])
+    # for factor in discount_factors:
+    #     new_value_column = []
+    #     # row[0] == 'world' and row[2] == 'child'
+    #     for row in node_df.itertuples(index=False):
+    #         # if the current world matches the last world, use the same CostPolicy instance
+    #         if row[0] == last_world:
+    #             continue
+    #         else:
+    #             discount_policy = CostPolicy(graphs[row[0]])
             
-            node_value = discount_policy.total_expected_cost(row[2], factor)
-            new_value_column.append(round(node_value, 3))
+    #         node_value = discount_policy.total_expected_cost(row[2], factor)
+    #         new_value_column.append(round(node_value, 3))
         
-        node_df[f'dv_{round(factor, 2)}'] = new_value_column
+    #     node_df[f'dv_{round(factor, 2)}'] = new_value_column
+    
+    num_elements_column = []
 
+    for row in node_df.itertuples(index=False):
+        graph_depth = graphs[row[0]].graph['depth']
+        node_depth = int(graphs[row[0]].nodes[row[2]]['depth'])
+        num_elements = graph_depth - node_depth
+        
+        num_elements_column.append(num_elements)
+    
+    node_df['numElements'] = num_elements_column
     return node_df
 
 data_frame = import_data_file('data\\treeNodePolicyIncludingN=1.csv').sort_values(by=['world'])
@@ -44,7 +54,7 @@ data_frame = import_data_file('data\\treeNodePolicyIncludingN=1.csv').sort_value
 graphs = iterate_graph_builder('tree_builder\\worlds')
 
 number_of_values = 100
-discounted_values_df = generate_discounted_values(data_frame, np.linspace(0, 0.99, num=number_of_values))
+discounted_values_df = generate_discounted_values(data_frame, np.linspace(0, 0.99, num=number_of_values), graphs)
 
-output_filepath = f'output//discounted_values_from_root_zero_gamma.csv'
-discounted_values_df.to_csv(output_filepath, sep='\t')
+output_filepath = f'output//optimal_values_num_elements.csv'
+discounted_values_df.to_csv(output_filepath, sep='\t', index=False)

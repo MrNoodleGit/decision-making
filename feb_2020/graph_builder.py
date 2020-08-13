@@ -21,10 +21,12 @@ def build_graph(file_path):
     '''
     graph_data_frame = pd.read_csv(file_path, sep='\t') # Import map into pandas data frame
     graph_data_frame['PARENTID'].fillna('X', inplace=True) # Root nodes have no parent.
+    graph_depth = graph_data_frame['depth'].iloc[-1]
 
     column_names = list(graph_data_frame.columns)
 
-    G = nx.DiGraph(world=graph_data_frame['world'][0]) # Create networkx graph G and set graph attribute "world" to name of map
+    G = nx.DiGraph(world=graph_data_frame['world'][0], depth=graph_depth) # Create networkx graph G and set graph attributes "world" to name of map
+    # of graph as designated by the depth of the last node in the file
     edge_list = list(zip(graph_data_frame['PARENTID'], graph_data_frame['NID'])) # List of (parent, child) pairs
     edge_list.pop(0) # Remove edge leading to root node.
     G.add_edges_from(edge_list)
