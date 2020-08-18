@@ -26,8 +26,10 @@ def generate_discounted_values(data_frame, discount_factors:iter):
         new_value_column = []
         # row[0] == 'world' and row[2] == 'child'
         for row in node_df.itertuples(index=False):
+            if row[0] == 'tworooms3':
+                continue
             # if the current world matches the last world, use the same CostPolicy instance
-            if row[0] == last_world:
+            elif row[0] == last_world:
                 continue
             else:
                 discount_policy = CostPolicy(graphs[row[0]])
@@ -39,12 +41,12 @@ def generate_discounted_values(data_frame, discount_factors:iter):
 
     return node_df
 
-data_frame = import_data_file('data\\treeNodePolicyIncludingN=1.csv').sort_values(by=['world'])
+data_frame = import_data_file('data\\treeNodePolicyE1E2Attrib.csv').sort_values(by=['world'])
 
-graphs = iterate_graph_builder('tree_builder\\worlds')
+graphs = iterate_graph_builder('tree_builder\\worlds_2')
 
 number_of_values = 100
 discounted_values_df = generate_discounted_values(data_frame, np.linspace(0, 0.99, num=number_of_values))
 
 output_filepath = f'output//discounted_values_from_root_zero_gamma.csv'
-discounted_values_df.to_csv(output_filepath, sep='\t')
+discounted_values_df.to_csv(output_filepath, sep='\t', index=False)
